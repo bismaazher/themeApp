@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { View, Text, ImageBackground, TouchableOpacity, Pressable } from 'react-native'
+import LocalizedStrings from 'react-native-localization';
+import { View, Text, ImageBackground, TouchableOpacity, Pressable, ActivityIndicator } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 import CommonStyles from '../CommonStyles';
 import images from '../component/Images'
@@ -40,27 +41,66 @@ const ButtonText = styled.Text`
   font-size: 20px;
   color: ${props => props.theme.SECONDARY_TEXT_COLOR};
 `
+const BackgroundImage = styled.ImageBackground`
+flex: 1;
+justify-content: center;
+align-items: center;
+`
+
+let strings = new LocalizedStrings({
+    "en-US": {
+        how: "How do you want your egg today?",
+        boiledEgg: "Boiled egg",
+        softBoiledEgg: "Soft-boiled egg",
+        choice: "How to choose the egg"
+    },
+    en: {
+        how: "How do you want your egg today?",
+        boiledEgg: "Boiled egg",
+        softBoiledEgg: "Soft-boiled egg",
+        choice: "How to choose the egg"
+    },
+    it: {
+        how: "Come vuoi il tuo uovo oggi?",
+        boiledEgg: "Uovo sodo",
+        softBoiledEgg: "Uovo alla coque",
+        choice: "Come scegliere l'uovo"
+    }
+});
+
+
+
+
 
 
 class Dashboard extends Component {
+    constructor(props) {
+        super(props)
 
+        this.state = {
+            longPressed: false
+        }
+    }
 
     render() {
         return (
             <ThemeProvider theme={this.props.theme}>
+                {/* <BackgroundImage source={require('../assets/img/mainbg.png')}> */}
                 <Container>
+
                     <TextContainer>
                         <Pressable style={({ pressed }) => ({
                             backgroundColor: pressed ? 'lightskyblue' : 'white'
-                        })} onPressIn={() =>
-                            console.warn("Pressed")} onPressOut={() => console.warn("Press out")} >
+                        })}
+                            onLongPress={() => console.warn("Long presssed") ,strings.setLanguage('it')}
+                            onPressIn={() => this.setState({ longPressed: false })} onPressOut={() => console.warn("Press out")} >
                             <Text>I'm pressable!</Text>
                         </Pressable>
 
                         <Button onPress={() => this.props.navigation.navigate("SecPage")}>
                             <ButtonText>Navigate to second Page</ButtonText>
                         </Button>
-                        <Title>Themed App </Title>
+                        <Title>  {strings.how} </Title>
                     </TextContainer>
                     {this.props.theme.mode === 'light' ? (
                         <Button onPress={() => this.props.switchTheme(darkTheme)}>
@@ -71,8 +111,17 @@ class Dashboard extends Component {
                                 <ButtonText>Switch to Light Theme</ButtonText>
                             </Button>
                         )}
+                    <View style={{
+                        flex: 1,
+                        justifyContent: "center",
+                    }}>
+                        {this.state.longPressed &&
+                            <ActivityIndicator size="large" color="#0000ff" />
+                        }
+                    </View>
 
                 </Container>
+                {/* </BackgroundImage> */}
             </ThemeProvider>
 
             //         <View style={[CommonStyles.container, { backgroundColor: this.state.switch == false ?"black":"purple" }]}>
