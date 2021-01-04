@@ -11,9 +11,10 @@ import { createStore, applyMiddleware, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
 
 import themeReducer from './redux/themeReducer'
+import langReducer from './redux/langReducer'
 
 const store = createStore(
-    combineReducers({ themeReducer }),
+    combineReducers({ themeReducer ,langReducer }),
     applyMiddleware(thunk)
 )
 

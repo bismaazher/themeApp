@@ -7,8 +7,10 @@ import { Item, Input, Icon } from 'native-base'
 import styled, { ThemeProvider } from 'styled-components/native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { switchTheme } from "../redux/action";
+import { switchTheme , switchLanguage } from "../redux/action";
+// import {} from '../redux/action'
 import { darkTheme, lightTheme } from '../styles/theme'
+import {stringsEn , stringsIt} from '../component/Languages'
 const Container = styled.SafeAreaView`
   flex: 1;
   background-color: ${props => props.theme.PRIMARY_BACKGROUND_COLOR};
@@ -45,10 +47,10 @@ const ButtonText = styled.Text`
 class SecPage extends Component {
     render() {
         return (
-            <ThemeProvider theme={this.props.theme}>
+            <ThemeProvider language={this.props.language} theme={this.props.theme}>
                 <Container>
                     <TextContainer>
-                        <Title>Second Page</Title>
+                        <Title>{this.props.language.secondpage}</Title>
                     </TextContainer>
                   
 
@@ -61,11 +63,13 @@ class SecPage extends Component {
 }
 
 const mapStateToProps = state => ({
-    theme:state.themeReducer.theme
+    theme:state.themeReducer.theme,
+    language:state.langReducer.lang
 })
 
 const mapDispatchToProps = dispatch => ({
-    switchTheme : bindActionCreators(switchTheme , dispatch)
+    switchTheme : bindActionCreators(switchTheme , dispatch),
+    switchLanguage : bindActionCreators(switchLanguage , dispatch)
 })
 
 export default connect(

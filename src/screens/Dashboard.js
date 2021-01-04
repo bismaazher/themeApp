@@ -9,6 +9,8 @@ import styled, { ThemeProvider } from 'styled-components/native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { switchTheme } from "../redux/action";
+import { switchLanguage } from '../redux/action';
+import { stringsEn, stringsIt } from '../component/Languages'
 import { darkTheme, lightTheme } from '../styles/theme'
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -46,33 +48,6 @@ flex: 1;
 justify-content: center;
 align-items: center;
 `
-
-let strings = new LocalizedStrings({
-    "en-US": {
-        how: "How do you want your egg today?",
-        boiledEgg: "Boiled egg",
-        softBoiledEgg: "Soft-boiled egg",
-        choice: "How to choose the egg"
-    },
-    en: {
-        how: "How do you want your egg today?",
-        boiledEgg: "Boiled egg",
-        softBoiledEgg: "Soft-boiled egg",
-        choice: "How to choose the egg"
-    },
-    it: {
-        how: "Come vuoi il tuo uovo oggi?",
-        boiledEgg: "Uovo sodo",
-        softBoiledEgg: "Uovo alla coque",
-        choice: "Come scegliere l'uovo"
-    }
-});
-
-
-
-
-
-
 class Dashboard extends Component {
     constructor(props) {
         super(props)
@@ -81,10 +56,14 @@ class Dashboard extends Component {
             longPressed: false
         }
     }
+    componentDidMount() {
+
+        console.warn(this.props.language.how)
+    }
 
     render() {
         return (
-            <ThemeProvider theme={this.props.theme}>
+            <ThemeProvider language={this.props.language} theme={this.props.theme}>
                 {/* <BackgroundImage source={require('../assets/img/mainbg.png')}> */}
                 <Container>
 
@@ -92,7 +71,7 @@ class Dashboard extends Component {
                         <Pressable style={({ pressed }) => ({
                             backgroundColor: pressed ? 'lightskyblue' : 'white'
                         })}
-                            onLongPress={() => console.warn("Long presssed") ,strings.setLanguage('it')}
+                            // onLongPress={() => console.warn("Long presssed"), strings.setLanguage('it')}
                             onPressIn={() => this.setState({ longPressed: false })} onPressOut={() => console.warn("Press out")} >
                             <Text>I'm pressable!</Text>
                         </Pressable>
@@ -100,7 +79,8 @@ class Dashboard extends Component {
                         <Button onPress={() => this.props.navigation.navigate("SecPage")}>
                             <ButtonText>Navigate to second Page</ButtonText>
                         </Button>
-                        <Title>  {strings.how} </Title>
+                        <Title> {this.props.language.how} </Title>
+
                     </TextContainer>
                     {this.props.theme.mode === 'light' ? (
                         <Button onPress={() => this.props.switchTheme(darkTheme)}>
@@ -118,63 +98,37 @@ class Dashboard extends Component {
                         {this.state.longPressed &&
                             <ActivityIndicator size="large" color="#0000ff" />
                         }
+
+
+
+                        <View>
+                            {this.props.language.mode === 'english' ? (
+                                <Button onPress={() => this.props.switchLanguage(stringsIt)}>
+                                    <ButtonText>Switch to Italian</ButtonText>
+                                </Button>
+                            ) : (
+                                    <Button onPress={() => this.props.switchLanguage(stringsEn)}>
+                                        <ButtonText>Switch to English</ButtonText>
+                                    </Button>
+                                )}
+
+                        </View>
+
+
+
+
+
+
+
+
+
                     </View>
 
                 </Container>
                 {/* </BackgroundImage> */}
             </ThemeProvider>
 
-            //         <View style={[CommonStyles.container, { backgroundColor: this.state.switch == false ?"black":"purple" }]}>
-            //             <ImageBackground style={[CommonStyles.container]}
-            //                 source={images.mainbg}
-            //             >
 
-            //                 <View style={[CommonStyles.container, { marginHorizontal: 30, justifyContent: 'center', alignItems: 'center' }]}>
-            //                 <View  style={{alignSelf:'flex-end'}}>
-            //                     <TouchableOpacity onPress={() => this.swithColors()} style={{backgroundColor:'green' ,paddingHorizontal:10 ,paddingVertical:10 ,borderRadius:4}}>
-            //                         <Text style={{color:'white'}}>Swith to black mode</Text>
-            //                         </TouchableOpacity>
-            //                     </View>
-            //                     <Item style={[CommonStyles.commonGreenText, { borderBottomColor: 'rgb(0, 177, 127)', marginVertical: 10 }]}>
-            //                         <View style={[CommonStyles.commonGreen, { paddingHorizontal: 10, height: '100%', alignItems: 'center', borderTopLeftRadius: 10, borderBottomLeftRadius: 10, marginLeft: -8 }]}>
-            //                             <Icon
-            //                                 style={{ flex: 1, color: 'white', justifyContent: 'center', alignItems: 'center', marginVertical: 12, marginLeft: 5 }}
-            //                                 name="mail"
-            //                                 type="Feather"
-            //                             />
-            //                         </View>
-            //                         <Input
-            //                             style={CommonStyles.commonGrayText}
-            //                             placeholder="Email Id"
-            //                             placeholderTextColor={CommonStyles.commonGrayText}
-            //                         />
-            //                     </Item>
-
-            //                     <Item style={[CommonStyles.commonGreenText, { borderBottomColor: 'rgb(0, 177, 127)', marginVertical: 10 }]}>
-            //                         <View style={[CommonStyles.commonGreen, { paddingHorizontal: 10, height: '100%', alignItems: 'center', borderTopLeftRadius: 10, borderBottomLeftRadius: 10, marginLeft: -8 }]}>
-            //                             <Icon
-            //                                 style={{ flex: 1, color: 'white', justifyContent: 'center', alignItems: 'center', marginVertical: 12, marginLeft: 5 }}
-            //                                 name="lock"
-            //                                 type="Foundation"
-            //                             />
-            //                         </View>
-            //                         <Input
-            //                             style={CommonStyles.commonGrayText}
-            //                             placeholder="Password"
-            //                             placeholderTextColor={CommonStyles.commonGrayText}
-            //                         />
-            //                     </Item>
-
-
-            //                     <TouchableOpacity style={[ CommonStyles.commonGreen, { paddingHorizontal: 40,marginVertical:30,borderRadius:5, paddingVertical:20}]}>
-            //                         <Text style={[CommonStyles.textColorWhite]}>
-            //                             Sign In
-            // </Text>
-            //                     </TouchableOpacity>
-
-            //                 </View>
-            //             </ImageBackground>
-            //         </View>
 
 
         )
@@ -182,11 +136,13 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => ({
-    theme: state.themeReducer.theme
+    theme: state.themeReducer.theme,
+    language: state.langReducer.lang
 })
 
 const mapDispatchToProps = dispatch => ({
-    switchTheme: bindActionCreators(switchTheme, dispatch)
+    switchTheme: bindActionCreators(switchTheme, dispatch),
+    switchLanguage: bindActionCreators(switchLanguage, dispatch)
 })
 
 export default connect(
