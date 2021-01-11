@@ -11,43 +11,9 @@ import { bindActionCreators } from 'redux'
 import { switchTheme } from "../redux/action";
 import { switchLanguage } from '../redux/action';
 import { stringsEn, stringsIt } from '../component/Languages'
+import crashlytics from '@react-native-firebase/crashlytics';
 import { darkTheme, lightTheme } from '../styles/theme'
-const Container = styled.SafeAreaView`
-  flex: 1;
-  background-color: ${props => props.theme.PRIMARY_BACKGROUND_COLOR};
-  justify-content: center;
-  align-items: center;
-`
-
-const TextContainer = styled.View`
-  padding: 15px;
-  border-radius: 5px;
-  border: 1px solid ${props => props.theme.PRIMARY_TEXT_COLOR};
-`
-
-const Title = styled.Text`
-  padding: 20px;
-  font-size: 24px;
-  font-weight: 500;
-  color: ${props => props.theme.PRIMARY_TEXT_COLOR};
-`
-
-const Button = styled.TouchableOpacity`
-  margin-top: 20px;
-  background-color: ${props => props.theme.SECONDARY_BUTTON_COLOR};
-  border-radius: 5px;
-  padding: 10px;
-`
-
-const ButtonText = styled.Text`
-  font-size: 20px;
-  color: ${props => props.theme.SECONDARY_TEXT_COLOR};
-`
-const BackgroundImage = styled.ImageBackground`
-flex: 1;
-justify-content: center;
-align-items: center;
-`
+import { Container, TextContainer, Title, Button, ButtonText } from '../component/stylingComponents'
 class Dashboard extends Component {
     constructor(props) {
         super(props)
@@ -64,14 +30,11 @@ class Dashboard extends Component {
     render() {
         return (
             <ThemeProvider language={this.props.language} theme={this.props.theme}>
-                {/* <BackgroundImage source={require('../assets/img/mainbg.png')}> */}
                 <Container>
-
                     <TextContainer>
                         <Pressable style={({ pressed }) => ({
                             backgroundColor: pressed ? 'lightskyblue' : 'white'
                         })}
-                            // onLongPress={() => console.warn("Long presssed"), strings.setLanguage('it')}
                             onPressIn={() => this.setState({ longPressed: false })} onPressOut={() => console.warn("Press out")} >
                             <Text>I'm pressable!</Text>
                         </Pressable>
@@ -98,7 +61,11 @@ class Dashboard extends Component {
                         {this.state.longPressed &&
                             <ActivityIndicator size="large" color="#0000ff" />
                         }
-
+                        <View>
+                            <Button onPress={() => crashlytics().crash()} >
+                                <ButtonText>Test Crash</ButtonText>
+                            </Button>
+                        </View>
 
 
                         <View>
@@ -113,31 +80,16 @@ class Dashboard extends Component {
                                 )}
 
                         </View>
-
-
-
-
-
-
-
-
-
                     </View>
-
                 </Container>
-                {/* </BackgroundImage> */}
             </ThemeProvider>
-
-
-
-
         )
     }
 }
 
 const mapStateToProps = state => ({
     theme: state.themeReducer.theme,
-    language: state.langReducer.lang
+    language: state.langReducer.lang,
 })
 
 const mapDispatchToProps = dispatch => ({
