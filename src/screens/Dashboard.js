@@ -13,18 +13,26 @@ import { switchLanguage } from '../redux/action';
 import { stringsEn, stringsIt } from '../component/Languages'
 import crashlytics from '@react-native-firebase/crashlytics';
 import { darkTheme, lightTheme } from '../styles/theme'
+import { Animated, Easing } from 'react-native';
+import LottieView from 'lottie-react-native';
 import { Container, TextContainer, Title, Button, ButtonText } from '../component/stylingComponents'
+
 class Dashboard extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            longPressed: false
+            longPressed: false,
+            // progress: new Animated.Value(0),
         }
     }
-    componentDidMount() {
 
+    componentDidMount() {
         console.warn(this.props.language.how)
+        // setTimeout(() => {
+        //     this.animation.play();
+        // }, 200);
+
     }
 
     render() {
@@ -79,7 +87,11 @@ class Dashboard extends Component {
                                     </Button>
                                 )}
 
+                            {/* <View style={{backgroundColor:'yellow'}}> */}
+
+                            {/* </View> */}
                         </View>
+                   
                     </View>
                 </Container>
             </ThemeProvider>

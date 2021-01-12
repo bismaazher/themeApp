@@ -11,8 +11,6 @@ import Routes from './src/Routes';
 import 'react-native-gesture-handler';
 import crashlytics from '@react-native-firebase/crashlytics';
 import messaging from '@react-native-firebase/messaging';
-
-
 import {
   SafeAreaView,
   StyleSheet,
@@ -33,15 +31,12 @@ import {
 
 const App: () => React$Node = () => {
   // Register background handler
-messaging().setBackgroundMessageHandler(async remoteMessage => {
-  console.warn('Message handled in the background!', remoteMessage);
-});
-
+  messaging().setBackgroundMessageHandler(async remoteMessage => {
+    console.warn('Message handled in the background!', remoteMessage);
+  });
 
   return (
-    
-  <Routes />
-
+    <Routes />
   );
 };
 
